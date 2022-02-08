@@ -1,0 +1,22 @@
+{% extends 'board/base.html' %}
+{% block content %}
+    <div class='container'>
+      <form action='../modify/' method='POST'>
+        {% csrf_token %}
+        <input type='hidden' name='id' value={{post.id}}>        
+        <div class="form-group">
+          <label for="exampleInputPassword1">작성 날짜</label>
+          <input type="date" class="form-control" id='now_date' name='createDate' value="{{post.createDate|date:'Y-m-d'}}">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">글 제목</label>
+          <input type="text" class="form-control" name='title' value='{{post.subject}}'>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputFile">게시글</label>
+          <textarea class="form-control" rows=10 name='content'>{{post.content}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-default">수정</button>
+      </form>
+    </div>
+{% endblock %}

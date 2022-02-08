@@ -1,0 +1,71 @@
+<!DOCTYPE html>  <!-- HTML5 표준을 따르는 문서라는 표시 -->
+<html>     <!-- HTML 문서의 시작 -->
+
+     <!-- 
+         화면에 보이지 않는 내용들 
+        주로 HTML 문서의 정보에 대한 내용들이 주로 들어감
+    -->
+    <head>  
+    </head>
+        <h1> 가장 큰 제목 </h1>
+        <h3> 중간 제목 </h3>
+        <h5> 소 제목 </h5>
+    <body>
+     <!-- 화면(웹 브라우저)에 보이는 내용들 -->
+        <p> 일반적으로 텍스트를 표현하는 용도로 사용 </p>
+        텍스트를 반드시 p 태그에 넣을 필요는 없다 <br><br>
+         
+        HTML은 줄바꿈(엔터)으로 CRLF를 사용하지 않는다.
+        줄바꿈 안됨 (p태그 안에 있는 텍스트의 경우에도 CRLF사용 불가)<br><br>
+        HTML의 엔터는 br태그이며<br>
+        내용이 없기 때문에 셀프클로징이 가능하며 태그를 닫지 않아도 된다.
+
+        <p> HTML은 공백 문자도      해석하지 않음 <br> </p>
+        <p> 이렇게 하면&nbsp;&nbsp;&nbsp;&nbsp;(앞에 4번 뒤에 2번)&ensp;&ensp;해석함 </p>
+
+        <ol>  순서 있는 리스트
+            <li> 첫번째 </li>
+            <li> 두번째 </li>
+            <li> 세번째 </li>
+        </ol>
+
+        <ul>  순서 없는 리스트
+            <li> 첫번째 </li>
+            <li> 두번째 </li>
+            <li> 세번째 </li>
+        </ul>
+
+        <img
+        src = "https://cdn.pixabay.com/photo/2012/04/13/01/23/moon-31665_960_720.png"
+        width='100', height='50'/>
+
+        <table border=1>
+            <thead>
+                <tr>
+                    <th> 이름 </th>
+                    <th> 학과 </th>
+                    <th> 학년 </th>
+                    <th> 학번 </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>  <!-- table row : 1행을 표현 -->
+                    <td> 짱구 </td>
+                    <td> 컴공 </td>
+                    <td> &ensp;4 </td>
+                    <td> &ensp;11 </td>
+                </tr>
+                <tr>  <!-- table row : 2행을 표현 -->
+                    <td> 철수 </td>
+                    <td> 식공 </td>
+                    <td> &ensp;3 </td>
+                    <td> &ensp;04 </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a href = 'http://www.naver.com', target='_blank'> 네이버 웹 페이지로 이동 </a> 
+        <!-- target을 '_blank'로 하면 새 창에서 열림-->
+    </body>
+</html>    <!-- HTML 문서의 끝 -->

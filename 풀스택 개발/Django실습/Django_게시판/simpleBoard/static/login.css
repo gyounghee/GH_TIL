@@ -1,0 +1,13 @@
+html, body{
+    height : 100%;
+}
+
+body {
+    display : flex;
+    align-items : center;
+    height : 100%;
+}
+
+.form-control {
+    width: 300px;
+} 

@@ -1,0 +1,44 @@
+/*
+글자와 관련된 속성은 상속이 가능한 대표적인 속성
+스타일도 상속이 가능한 속성이 있다.
+부모 태그에서 자식 태그로 상속이 가능
+부모 태그에 속성을 지정한 경우 자식 태그들도 동일한 스타일 적용
+*/
+
+* {  /* *(와일드 카드)는 전체를 말함*/
+    font-size : 20px ;
+    font-family : '나눔고딕' '굴림체' 'serif' 'sans-serif';
+    line-height : 2;
+}
+
+h2 {
+    color : red;
+}
+
+#column1{ 
+    /*id속성은 유일한 값을 가져야하며 id속성에 스타일을 부여할 때는 
+    id속성 이름 앞에 #을 붙인다*/
+    color : yellowgreen;
+}
+
+.footer{
+    /* class 속성값은 중복 가능하며 class속성에 스타일을 부여할 때는
+    class속성 이름 앞에 .을 붙인다.*/
+    color : blueviolet;
+}
+
+div h2{  /* 이건 하위 선택자 */
+    color : blue
+}
+
+#column1 > h2 { 
+    /* 자식선택자는 꺽쇠로 표현하며,
+    모든 하위  태그가 아닌 "바로 밑"의 하위 태그만 자식으로 인정 */
+    color : yellow
+}
+
+.column3 {
+    border : 5px solid blue;
+    margin : 50px;  /* 상하좌우 모두 margin */
+    padding : 35px; /* 상하좌우 모두 padding */
+}

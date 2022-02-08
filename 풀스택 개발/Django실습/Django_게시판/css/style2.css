@@ -1,0 +1,60 @@
+.title{
+    display : inline;
+}
+
+header{
+    background-color : rgb(8, 113, 173);
+    color : white;
+}
+
+.list{  /* 이 부분 배치 공부 필요*/
+    display : inline;
+    position : absolute;
+    right: 20px;
+    bottom : 20px ;
+    text-align : right;
+}
+
+.list-item{
+    display : inline-block;
+    /* Inline 속성은 넓이를 가질 수 없음*/
+    /* inline-block 속성은 inline속성을 가지면서 block속성도 함께 사용 가능 */
+    width : 300px;
+    font-size : 30px;
+    text-transform : uppercase;
+}
+
+.container{
+    position:relative;
+    margin-top : 20px;
+    margin-bottom: 20px;
+    padding-top : 20px;
+    padding-bottom : 20px
+}
+
+.span{
+    position : absolute;
+    top : 50px;
+    left : 180px;
+}
+
+/* float을 이용한 div 배치 */
+#column1{
+    float : left;
+    width : 30%;
+}
+
+.column2{
+    float : left;
+    width : 30% ;
+}
+
+.column3{
+    float: left;
+    width : 30%;
+}
+
+.footer{
+    clear : left;
+    
+}

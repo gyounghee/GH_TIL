@@ -1,0 +1,26 @@
+{% extends 'board/base.html' %}
+{% block content %}
+    <div class='container'>
+      <form action='/board/create' method='POST'>
+        {% csrf_token %}
+          <div class="form-group">
+            <label for="exampleInputPassword1">작성 날짜</label>
+              <input type="date" class="form-control" id='now_date' name='createDate'>
+              <script>
+                document.getElementById('now_date').valueAsDate = new Date();
+              </script>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">글 제목</label>
+            <input type="text" class="form-control" placeholder='제목을 작성하세요'  name='subject'>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputFile">게시글</label>
+            <textarea class="form-control" rows=10 placeholder='게시글을 작성하세요' name='content'></textarea>
+          </div>
+          <a href = '/create'>
+            <button type="submit" class="btn btn-default">등록</button>
+          </a>
+      </form>
+    </div>
+{% endblock %}
