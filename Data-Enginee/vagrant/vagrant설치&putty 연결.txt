@@ -1,0 +1,14 @@
+1.vagrant 다운받아서 설치
+2. spark-in-action.box 5기가짜리 다운받고
+3. HashiCorp 안에 Vagrant안에 box넣고
+3. 제어판에서 환경변수 설정하고
+4. cmd에서 경로를 spark-in-action.box가 들어있는 Vagrant파일로 경로를 들어가서
+vagrant box add --name manning/spark-in-action spark-in-action.box
+5. VagrantFile 파일 만들기 위해
+vagrant init manning/spark-in-action
+6. vagrant up 
+(vagrant ..reload...뭐 하라고 했던 것 같은데 ㅠ 잘 모름)
+7. vagrant ssh -- -l spark
+8. putty open
+------------------------------------
+9. 끌때는 vagrant halt 로 끄기

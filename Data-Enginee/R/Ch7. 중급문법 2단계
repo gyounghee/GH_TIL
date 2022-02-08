@@ -1,0 +1,124 @@
+library(dplyr)
+# 데이터 불러오기
+STOCK = read.csv("C:/Users/user/Desktop/Uniqlo(FastRetailing) 2012-2016 Training - stocks2012-2016.csv")
+
+STOCK$Date = as.Date(STOCK$Date)
+STOCK$Year = as.factor(format(STOCK$Date,"%Y"))
+STOCK$Day = as.factor(format(STOCK$Date, "%a"))
+
+# 집계 기준 변수 및 명령어에 따른 요약값 계산
+Group_Data = STOCK %>%
+  group_by(Year,Day) %>%
+  summarise(Mean = round(mean(Open)),
+            Median = round(median(Open)),
+            Max = round(max(Open)),
+            Counts = length(Open))
+
+# ungroup - group으로 묶인 데이터를 그룹 해제 시켜줌
+Ungroup_Data = Group_Data %>%
+  ungroup()
+
+# 집계 기준에 따라 데이터의 row 개수 계산
+Count_Data = STOCK %>%
+  group_by(Year,Day) %>%
+  count()
+
+# 조건에 따라 데이터 추출하기
+Subseted_Data = Group_Data %>%
+  filter(Year == "2012")
+
+# 중복데이터 생성
+SL = sample(1:nrow(Group_Data),500,replace = TRUE)
+Duplicated_Data = Group_Data[SL,]
+
+# 중복데이터 제거
+Duplicated_Data2 = Duplicated_Data %>%
+  distinct(Year,Day,Mean,Median,Max,Counts)
+
+# 샘플데이터 무작위 추출
+# sample_frac()는 Size에 비율(0~1)을 입력
+Sample_Frac_Gr = Group_Data %>%
+  sample_frac(size = 0.4, replace = FALSE)
+
+Sample_Frac_Un = Ungroup_Data %>%
+  sample_frac(size = 0.4, replace = FALSE)
+
+# sample_n()는 size에 행의 개수를 입력
+Sample_N_Gr = Group_Data %>%
+  sample_n(size = 5, replace=FALSE)
+
+Sample_N_Un = Ungroup_Data %>%
+  sample_n(size = 10, reaplace = FALSE)
+
+# 정해진 Index에 따라 데이터 추출
+# slice()는 Index를 직접 설정
+# 데이터셋이 ungroup()이 되어있는 상태로 진행해야 한다.
+Slice_Data = Ungroup_Data %>%
+  slice(1:10)
+
+# top_n()은 설정해준 변수를 기준으로 가장 값이 높은 n개의 데이터를 가져옴
+Top_n_Data = Ungroup_Data %>%
+  top_n(5,Mean)
+
+# 데이터 정렬 - arrange()
+# 오름차순
+Asce_Data = Ungroup_Data %>%
+  arrange(Mean)
+
+# 내림차순
+# 변수에 '-' 붙여주면 됨
+Desc_Data = Ungroup_Data %>%
+  arrange(-Mean)
+
+# 원하는 변수(column만 뽑아내기)
+# select()
+Select_Data = Group_Data %>%
+  select(1:2)  # 또는 select(Year,Day)
+
+# select if()
+# Factor 변수만 뽑기
+Select_if_Data1 = Group_Data %>%
+  select_if(is.factor)
+
+# integer 변수만 뽑기
+Select_if_Data2 = Group_Data %>%
+  select_if(is.integer)
+
+# 새로운 변수 만들기 or 한번에 처리하기
+# mutate() - 하나의 변수를 명령어에 따라 추가하는 방법
+Mutate_Data = STOCK %>%
+  mutate(Divided = round(High/Low,2)) %>%
+  select(Date,High,Low,Divided)
+
+# mutate_if() - 지정해준 모든 변수에 대해 계산식 적용
+# integer 타입 변수를 모두 numeric으로 변경
+Mutate_IF_Data = STOCK %>%
+  mutate_if(is.integer, as.numeric)
+
+# mutate_at()
+# 지정한 변수들에 대해 계산식을 적용시키는 명령어
+Mutate_At_Data = STOCK %>%
+  mutate_at(vars(-Date, -Year, -Day), log) %>%
+  select_if(is.numeric)
+
+# --------------------연 습 문 제 ---------------------
+#1. HR데이터에 Factor 변수들만 뽑아서 HR_Factor라는 DF를 만들고, Numeric 변수들만 뽑아 HR_Numeric 데이터 생성
+# → HR_Factor DF 생성
+HR_Factor = HR %>%
+  select_if(is.factor) 
+    
+# → HR_Numeric 데이터 생성
+HR_Numeric = HR %>%
+  select_if(is.numeric)
+ 
+# 2. HR 데이터의 sales,left 변수를 기준으로 satisfaction_level, last_evaluation의 
+# 평균, 중위수, 표준편차 값을 계산해서 HR_summarise라는 DF 생성
+HR_summarise = HR %>%
+  group_by(sales,left) %>%
+  summarise(MEAN_SL = round(mean(satisfaction_level)),
+            MEDIAN_SL = round(median(satisfaction_level)),
+            SD_SL = round(sd(satisfaction_level)),
+            MEAN_LE = round(mean(last_evaluation)),
+            MEDIAN_LE = round(median(last_evaluation)),
+            SD_LE = round(sd(last_evaluation))
+            )
