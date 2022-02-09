@@ -1,3 +1,4 @@
+```
 # putty open한 후 login
 lab24  # Terminal 접속 ID(Putty)
 
@@ -34,4 +35,4 @@ cd /opt/spark/
 # **2. pyspark 실행** 
 # pyspark 실행 명령어
 pyspark
-
+```
