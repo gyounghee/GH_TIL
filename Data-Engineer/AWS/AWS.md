@@ -14,7 +14,7 @@ http://18.182.177.124:8924/
 # password
 # multi1234!  로 jupyter notebook 로그인
 ```
-# ----------------------------------------------------
+
 ```
 # jupyter notebook에서 가상 환경 생성 방법
 # New > Terminal  
