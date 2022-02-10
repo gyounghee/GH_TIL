@@ -1,3 +1,78 @@
+## putty
+
+1. putty 다운로드   
+[putty 다운로드 페이지](https://www.chiark.greenend.org.uk/~sgtatham/putty/releases/0.76.html)  
+`putty-64bit-0.76-installer.msi`   →  클릭하여 설치
+
+2. putty 다운로드 후 putty 설정   
+* putty 실행  
+``` 
+Host Name : 192.168.10.2
+Saved Session : test
+```
+입력한 후 save  
+→ 다음에 putty 실행할 때 load함으로써 편하게 사용하기 위함
+
+
+## vagrant
+1. vagrant 다운로드  
+[vagrant download](https://www.vagrantup.com/)
+
+
+2. vagrant > spark-in-action.box 다운로드  
+[spark-in-action.box download](https://app.vagrantup.com/anassbo/boxes/spark-in-action-box)
+
+
+3. vagrant설치하면 ~/HashiCorp/Vagrant 파일 자동생성   
+  - ~/HashiCorp/Vagrant 안에  spark-in-action.box 넣기
+
+
+4. 제어판 > 시스템 환경 변수 편집 > 환경변수 
+- 사용자 변수에  
+ `변수명 : VAGRANT_HOME` / `값 : C:\HashiCorp\Vagrant` 추가   
+  [ 값에 해당하는 경로는 다를 수 있음 ]
+
+
+5. cmd에서 spark-in-action.box가 들어있는 Vagrant파일로 경로를 설정하고   
+```vagrant box add --name manning/spark-in-action spark-in-action.box``` 입력
+- 가상환경 만드는 코드였던 것 같음..  
+
+
+6. VagrantFile 생성   
+```vagrant init manning/spark-in-action```
+
+7. vagrant up
+- vagrant up이 잘 실행되면 가상환경이 실행된 것
+  - 만약 안될 시 VagrantFile을 HashiCorp로 뺴거나
+  - cmd를 `관리자 실행 권한`으로 열고 vagrant up 하기
+
+## vagrant와 putty 연결
+```
+# vagrant up이 잘 실행된 것을 확인한 후 putty의 test를 load하고 open 
+
+# login id : spark  또는 vagrant   
+# password : spark  또는 vagrant   
+
+# 만약 vagrant로 할 경우 `sudo su - spark` 인가.. 로 vagrant에서 spark로 변경 가능
+```
+
+## **vagrant와 putty 종료시키기**
+
+cmd에서 꼭 
+```
+vagrant halt
+```
+해준 후, putty 종료 시켜야 함.
+
+.  
+.  
+.  
+.  
+.  
+.  
+
+vagrant 다운로드 후 과정 참고
+```
 Microsoft Windows [Version 10.0.22000.434]
 (c) Microsoft Corporation. All rights reserved.
 
@@ -267,3 +342,6 @@ Run 'do-release-upgrade' to upgrade to it.
 
 Last login: Mon Feb  7 15:52:58 2022 from 10.0.2.2
 vagrant@spark-in-action:~$
+
+```
+
