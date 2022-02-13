@@ -1,5 +1,5 @@
 ###  ------------------------------ 2.2.2 첫 스파크 코드 예제 --------------------------------
-```
+```pyspark
 # spark API를 통해 LICENSE파일을 읽어들이고
 licLines = sc.textFile("/usr/local/spark/LICENSE")
 # licLines의 요소의 개수(즉, 줄 수) count
@@ -66,7 +66,7 @@ ex) count, foreach 등
 : RDD의 모든 요소에 임의의 함수를 적용할 수 있는 변환연산자
 - filter와는 달리 반환하는 호출된 RDD의 타입과 map함수가 반환하는 RDD의 타입이 같을 수도, 다를 수도 있다.   
 
-```
+```pyspark
 # numbers는 sc(SparkContext)의 paralleize메서드를 통해 Seq객체를 받아 이 Seq 객체의 요소로 구성된 새로운 RDD를 만듦
 # 여기서 Seq객체의 요소는 여러 스파크 실행자(executor)로 분산된다.
 # range메서드의 인수로 전달된 10 to 50 by 10은 python의 특유의 표현식 , Seq 인터페이스를 구현한  Range 클래스 객체 생성
@@ -88,7 +88,7 @@ reversed.foreach(lambda x: print(x))   # 한 줄 씩 출력
 .
 ###  ------------------------------ 2.3.2 distinct와 flatMap 변환 연산자 --------------------------------
 
-```
+```python
 # --------------------------- terminal 하나 더 open ---------------------------
 # 임의로 고객 ID를 입력하여 샘플 파일 준비
 echo "15,16,20,20
@@ -118,7 +118,7 @@ idsStr.collect()
  - 주어진 함수를 RDD의 모든 요소에 적용(map과 동일)
  - 익명 함수가 반환한 배열의 중첩 구조를 한 단계 제거하고 모든 배열이 요소를 단일 컬렉션으로 병합
 
-```
+```python
 # faltMap을 통해 lines RDD를 ','기준으로 분할하여 ids에 저장
 ids = lines.flatMap(lambda x: x.split(","))
 
@@ -191,7 +191,7 @@ uniqueIds.take(5)  # 그중 3개를 가져와라
 +) 암시적 변환이란?  
 : 
 
-```
+```python
 ### 2.4.1
 # intIds RDD는 INT객체로 구성되지만,
 # Dovle 객체로 자동 변환되므로 double RDD 함수가 암시적으로 적용됨
