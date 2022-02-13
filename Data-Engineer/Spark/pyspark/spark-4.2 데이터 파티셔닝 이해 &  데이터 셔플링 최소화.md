@@ -1,3 +1,4 @@
+## 4.2 데이터 파티셔닝을 이해하고 데이터 셔플링 최소화
 * **데이터 파티셔닝**  
 : 데이터를 여러 클러스터 노드로 분할하는 메커니즘  
   - 스파크의 성능과 리소스 점유량을 크게 좌우할 수 있는 RDD의 가장 기본적인 개념
@@ -44,7 +45,7 @@ _
   
   2. 사용할 Partitioner(스파크 지원 Partitioner 또는 사용자 정의 Partitioner)를 추가 인수로 받음  
 
-```python
+```pyspark
 # HashPartitoner에 파티션 100개 설정
 # 1. Int 인수를 추가로 받는 경우
 rdd.foldByKey(afunction, 100)  
