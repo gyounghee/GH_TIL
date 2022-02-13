@@ -44,7 +44,7 @@ _
   
   2. 사용할 Partitioner(스파크 지원 Partitioner 또는 사용자 정의 Partitioner)를 추가 인수로 받음  
 
-```pyspark
+```python
 # HashPartitoner에 파티션 100개 설정
 # 1. Int 인수를 추가로 받는 경우
 rdd.foldByKey(afunction, 100)  

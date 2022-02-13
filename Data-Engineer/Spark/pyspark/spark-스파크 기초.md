@@ -1,5 +1,5 @@
 ###  ------------------------------ 2.2.2 첫 스파크 코드 예제 --------------------------------
-```pyspark
+```python
 # spark API를 통해 LICENSE파일을 읽어들이고
 licLines = sc.textFile("/usr/local/spark/LICENSE")
 # licLines의 요소의 개수(즉, 줄 수) count
@@ -66,7 +66,7 @@ ex) count, foreach 등
 : RDD의 모든 요소에 임의의 함수를 적용할 수 있는 변환연산자
 - filter와는 달리 반환하는 호출된 RDD의 타입과 map함수가 반환하는 RDD의 타입이 같을 수도, 다를 수도 있다.   
 
-```pyspark
+```python
 # numbers는 sc(SparkContext)의 paralleize메서드를 통해 Seq객체를 받아 이 Seq 객체의 요소로 구성된 새로운 RDD를 만듦
 # 여기서 Seq객체의 요소는 여러 스파크 실행자(executor)로 분산된다.
 # range메서드의 인수로 전달된 10 to 50 by 10은 python의 특유의 표현식 , Seq 인터페이스를 구현한  Range 클래스 객체 생성
@@ -164,7 +164,7 @@ transactionCount
 +) 파티션    
 : 클러스터의 여러 노드에 저장된 데이터의 일부분
 
-```
+```python
 # ---------------- sample ----------------
 # uniqueIds의 데이터를 비복원 추출을 하는데, seed는 (0.3)지정 
 # seed는 컴퓨터가 난수를 일정하게 생성하지 않도록 변화를 주는 값.
