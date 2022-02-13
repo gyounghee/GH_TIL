@@ -1,26 +1,27 @@
-> **데이터 파티셔닝**  
+* **데이터 파티셔닝**  
 : 데이터를 여러 클러스터 노드로 분할하는 메커니즘  
-- 스파크의 성능과 리소스 점유량을 크게 좌우할 수 있는 RDD의 가장 기본적인 개념
+  - 스파크의 성능과 리소스 점유량을 크게 좌우할 수 있는 RDD의 가장 기본적인 개념
 
-> **스파크 클러스터**  
+* **스파크 클러스터**  
 : 병렬 연산이 가능하고 네트워크로 연결된 머신(노드)의 집합
 
-> **RDD의 파티션**  
+* **RDD의 파티션**  
 : RDD 데이터의 일부를 의미  
  ex) 로컬 파일 시스템에 저장된 textFile을 spark에 load하면
-1. 스파크는 파일 내용을 여러 파티션으로 분할하여 클러스터 노드에 고르게 분산 저장하며, 여러 파티션을 하나의 노드에 저장할 수도 있다
-2. 이렇게 분산된 파티션이 모여서 하나의 RDD를 형성      
+  1. 스파크는 파일 내용을 여러 파티션으로 분할하여 클러스터 노드에 고르게 분산 저장하며, 여러 파티션을 하나의 노드에 저장할 수도 있다
+  2. 이렇게 분산된 파티션이 모여서 하나의 RDD를 형성      
  ( *RDD의 파티션 목록은 RDD의 partitions 필드로 제공되며, 필드 타입은 Array이므로 partitions.size 필드로 파티션 개수를 알아 낼 수 있다. )*
-- RDD의 파티션 개수는 해당 RDD에 변환 연산을 실행할 테스크 개수와 직결되기 떄문에 매우 중요하다
-  - 테스크 개수가 필요 이하로 적으면 클러스터를 충분히 활용할 수 없다. 또한, 각 테스크가 처리할 데이터 분량이 실행자의 메모리 리소스를 초과해 메모리 문제가 발생할 수 있기 때문에, 클러스터의 코어 개수보다 서너배 더 많은 파티션을 사용하는 것이 좋다
-  - But, 테스크가 너무 많으면 병목 현상이 발생하므로 비상식적으로 큰 값은 설정 X
+  - RDD의 파티션 개수는 해당 RDD에 변환 연산을 실행할 테스크 개수와 직결되기 떄문에 매우 중요하다
+    - 테스크 개수가 필요 이하로 적으면 클러스터를 충분히 활용할 수 없다. 또한, 각 테스크가 처리할 데이터 분량이 실행자의 메모리 리소스를 초과해 메모리 문제가 발생할 수 있기 때문에, 클러스터의 코어 개수보다 서너배 더 많은 파티션을 사용하는 것이 좋다
+    - But, 테스크가 너무 많으면 병목 현상이 발생하므로 비상식적으로 큰 값은 설정 X
 
 --------------------------------------------------------------------------------
 ## 4.2.1 스파크의 데이터 Partitioner
-> **스파크의 데이터 Partitoner**
-- RDD의 각 요소에 파티션 번호를 할당하는 Partitioner 객체가 수행
-- 스파크는 Partitioner의 구현체
-  - HashPartitioner와 RangePartitioner를 제공, 사용자 정의 Partitioner를 Pair RDD에 사용할 수 있음
+* **스파크의 데이터 Partitoner**
+  - RDD의 각 요소에 파티션 번호를 할당하는 Partitioner 객체가 수행
+  - 스파크는 Partitioner의 구현체
+    - HashPartitioner와 RangePartitioner를 제공, 사용자 정의 Partitioner를 Pair RDD에 사용할 수 있음
+    
 1. **HashPartitioner**
   - 스파크의 기본 Partitioner, **파티션 개수를 받는 메서드를 호출**할 떄 사용
   - 각 요소의 해시 코드(Pair RDD는 키의 해시 코드)를 단순한 mod공식(partitionIndex = hashCode % numberOfPartitions)에 대입해 **파티션 번호를 계산**
@@ -43,7 +44,7 @@ _
   
   2. 사용할 Partitioner(스파크 지원 Partitioner 또는 사용자 정의 Partitioner)를 추가 인수로 받음  
 
-```
+```pyspark
 # HashPartitoner에 파티션 100개 설정
 # 1. Int 인수를 추가로 받는 경우
 rdd.foldByKey(afunction, 100)  
@@ -52,37 +53,47 @@ rdd.foldByKey(afunction, 100)
 # 사용자 정의 Partitioner를 지정하려면 두 번째 버전 사용
 rdd.foldByKey(afunction,new HashPartitioner(100))
 ```
-> * mapValues와 flatMapValues를 제외한 Pair RDD의 변환 연산자는 모두 위 두 가지 버전의 메서드를 추가로 제공한다.
+
+* mapValues와 flatMapValues를 제외한 Pair RDD의 변환 연산자는 모두 위 두 가지 버전의 메서드를 추가로 제공한다.
   - mapValues와 flatMapValues는 항상 파티셔닝을 보존
+
 * Pair RDD 변환 연산자를 호출할 때 Partitioner를 따로 지정하지 않으면 스파크는 부모 RDD(현재 RDD를 만드는데 사용한 RDD들)에 지정된 파티션 개수 중 가장 큰 수 사용
-    - Partitioner를 정의한 부모 RDD가 없다면 spark.default.parallelism 매개변수에 지정된 파티션 개수로 HashPartitioner를 사용
-* 기본 HashPartitioner를 그대로 사용하면서 임의의 알고맂므으로 키의 해시 코드만 바꾸어도 Pair RDD 데이터의 파티션 배치를 변경할 수 있음 
+  - Partitioner를 정의한 부모 RDD가 없다면 spark.default.parallelism 매개변수에 지정된 파티션 개수로 HashPartitioner를 사용
+
+* 기본 HashPartitioner를 그대로 사용하면서 임의의 알고리즘으로 키의 해시 코드만 바꾸어도 Pair RDD 데이터의 파티션 배치를 변경할 수 있음 
   - 이 방법은 구현하기도 더 쉽고, 부주의한 셔플링을 피할 수 있기 때문에 성능도 향상할 수 있음
 
 --------------------------------------------------------------------------------
 ## 4.2.2 불필요한 셔플링 줄이기
-> * 셔플링  
+* 셔플링  
 : 파티션 간의 물리적인 데이터 이동
-  - 새로운 RDD의 파티션을 만들기위해 여러 파티션의 데이터를 합칠 때 발생
->> [ **세 파티션으로 구성된 RDD에 aggregateByKey 변환 연산을 수행할 때 셔플링 과정** ]  
->> 1. aggregateByKey에 전달된 변환 함수는 파티션별로 값을 병합
->> 1-2. 중간 파일에는 파티션별로 병합된 값을 저장하며, 이 파일을 셔플링 단계의 입력 데이터로 사용
->> 2. 병합 함수는 셔플링 단계를 거치며, 여러 파티션의 값을 최종 병합
->> +) aggregateByKey에는 변환 함수(값의 타입을 변경)와 병합 함수(두 값을 하나로 합침)를 전달함
-    - 변환 함수는 각 파티션의 내부 값들을 병합하며, 병합 함수는 여러 파티션의 값을 최종 병합    
->> ```
->> prods = transByCust.aggregateByKey([], lambda prods, tran: prods + [tran[3]],
+  - 새로운 RDD의 파티션을 만들기위해 여러 파티션의 데이터를 합칠 때 발생  
+
+.  
+* [ **세 파티션으로 구성된 RDD에 aggregateByKey 변환 연산을 수행할 때 셔플링 과정** ]    
+1. aggregateByKey에 전달된 변환 함수는 파티션별로 값을 병합  
+  1-2. 중간 파일에는 파티션별로 병합된 값을 저장하며, 이 파일을 셔플링 단계의 입력 데이터로 사용  
+2. 병합 함수는 셔플링 단계를 거치며, 여러 파티션의 값을 최종 병합  
+
++) aggregateByKey에는 변환 함수(값의 타입을 변경)와 병합 함수(두 값을 하나로 합침)를 전달함
+  - 변환 함수는 각 파티션의 내부 값들을 병합하며, 병합 함수는 여러 파티션의 값을 최종 병합    
+```
+prods = transByCust.aggregateByKey([], lambda prods, tran: prods + [tran[3]],
     lambda prods1, prods2: prods1 + prods2)
->> # 1. RDD1의 파티션별로(파티션 1 ~ 3까지) 각 키 값을 모아서 리스트를 구성
->> # 2. 스파크는 이 리스트들을 각 노드의 중간 파일에 기록
->> # 3. 병합 함수를 호출해 여러 파티션에 저장된 리스트들을 각 키별 단일 리스트로 병합
->> # 4. 기본 Partitioner(즉, HashPartitioner)를 적용하여 각 키를 적절한 파티션에 할당
->> ```    
-> * 맵 테스크  
-: 셔플링 바로 전에 수행한 테스크
-  - 맵 테스크의 결과는 중간 파일에 기록(주로 OS의 파일 시스템 캐시에만 저장), 이후 리듀스 테스크가 이 파일을 읽어 들음
-  - 중간 파일을 디스크에 기록하는 작업도 부담이지만, 셔플링할 데이터를 네트워크로 전송해야 하기 때문에 스파크 잡의 셔플링 횟수를 최소한으로 줄이도록 노력해야함
-> * 리듀스 테스크  
+# 1. RDD1의 파티션별로(파티션 1 ~ 3까지) 각 키 값을 모아서 리스트를 구성
+# 2. 스파크는 이 리스트들을 각 노드의 중간 파일에 기록
+# 3. 병합 함수를 호출해 여러 파티션에 저장된 리스트들을 각 키별 단일 리스트로 병합
+# 4. 기본 Partitioner(즉, HashPartitioner)를 적용하여 각 키를 적절한 파티션에 할당
+```      
+
+_    
+* 맵 테스크       
+: 셔플링 바로 전에 수행한 테스크  
+  - 맵 테스크의 결과는 중간 파일에 기록(주로 OS의 파일 시스템 캐시에만 저장), 이후 리듀스 테스크가 이 파일을 읽어 들음  
+  - 중간 파일을 디스크에 기록하는 작업도 부담이지만, 셔플링할 데이터를 네트워크로 전송해야 하기 때문에 스파크 잡의 셔플링 횟수를 최소한으로 줄이도록 노력해야함  
+
+_  
+* 리듀스 테스크  
 : 셔플링 바로 다음에 수행한 테스크
 
 -------------------------------------------------------------------
@@ -91,7 +102,7 @@ rdd.foldByKey(afunction,new HashPartitioner(100))
 > * Pair RDD 변환 연산자의 대부분에 사용자 정의 Partitioner를 지정할 수 있고, 사용자 정의 Partitioner를 쓰면 반드시 셔플링이 발생 ( 이전 HashPartitioner와 다른 HashPartitioner를 사용해도 동일 )  
 * 스파크는 HashPartitioner 객체가 다르더라도 동일한 파티션 개수를 지정했다면 같다고 간주
   - 즉, 이전에 사용한 HashPartitioner와 **파티션 개수가 다른** HashPartitioner를 변환 연산자에 사용하면 셔플링이 발생
->```
+>```python
 > # RDD의 원래 파티션 개수(parallelism)가 100개가 아니였다고 가정
 > # 파티션의 개수를 100개라고 명시적으로 변경
 > rdd.aggregateByKey(zeroValue, seqFunc, comboFunc, 100).collect()
@@ -103,7 +114,7 @@ rdd.foldByKey(afunction,new HashPartitioner(100))
   - map과 flatMap
   - 이 연산자 자체로는 셔플링이 발생하지 않지만, 연산자의 결과 RDD에 다른 변환 연산자(aggregateByKey나 flodByKey)를 사용하면 Partitioner를 사용했더라도 셔플링 발생
 
-```
+```python
 # sc.parralelize() 이용하여 RDD 생성  ( 0~9999 정수 목록으로 RDD 만듦)
 rdd = sc.parallelize(range(10000))   
 # map 변환을 사용하여 Pair RDD를 생성하고, Partitioner를 제거한 후 또 다른 map으로 키와 값을 서로 바꿈 (셔플링 발생 X )
@@ -198,8 +209,8 @@ rdd.map(lambda x: (x, x*x)).reduceByKey(lambda v1, v2: v1+v2).collect()
 : 각 파티션의 모든 요소를 배열 하나로 모으고, 이 배열들을 요소로 포함하는 새로운 RDD를 반환
   - 새로운 RDD에 포함된 요소 개수는 이 RDD의 파티션 개수와 동일
   - glom 연산자는 기존의 Partitioner를 제거 
-    
-```
+
+```python
 import random
 # 0 ~ 99 중에서 랜덤하게 숫자를 500번 뽑아라
 l = [random.randrange(100) for x in range(500)]
