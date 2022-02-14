@@ -164,3 +164,16 @@ FROM 주문
 WHERE 고객.고객번호 = 주문.고객번호) AS 주문횟수
 FROM 고객;
 ```
+
+```python
+연결  mysql -u test4 -p     
+
+mysql -r TESTDB4 -p  ?
+
+# 한글 설정 (옵션)
+SET FOREIGN_KEY_CHECKS = 0;
+ALTER TABLE 테이블명 convert to charset utf8;
+
+# 
+이경희 test4 TESTDB4
+```
