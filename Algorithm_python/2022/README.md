@@ -1,9 +1,9 @@
 ### [ python_prac ]
-#### 프로그래머스
+#### * **프로그래머스**
  * 프로그래머스 - 프린터 (스택 / 큐)
  * 프로그래머스 - 다리를 지나는 트럭(스택)  ▶ 못품
 
- #### SW Expert Academy
+ #### * **SW Expert Academy**
  * SW Expert Academy - 평균값 구하기
  * SW Expert Academy - 홀수 만 더하기
  * SW Expert Academy - 연월일 달력
@@ -40,7 +40,7 @@
  * SW Expert Academy - 최빈수 구하기
  * SW Expert Academy - 백만장자 프로젝트
 
- #### etc
+ #### * **etc**
  * n^m구하기
  * power() 함수 작성
  * 러시아 농부의 곱셈
