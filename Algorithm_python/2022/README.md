@@ -38,7 +38,7 @@
  * SW Expert Academy - 조교의 성적 매기기
  * SW Expert Academy - 중간 평균값 구하기
  * SW Expert Academy - 최빈수 구하기
- * SW Expert Academy - 백만장자 프로젝트  
+ * SW Expert Academy - 백만장자 프로젝트  ▶ 다른 사람 코드 참고 ( 제한시간 초과 문제 ) 
 
  #### * **etc**
  * n^m구하기
