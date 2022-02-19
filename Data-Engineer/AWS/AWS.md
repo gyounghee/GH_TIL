@@ -9,7 +9,7 @@ conda activate python3  #  가상환경 python3으로 실행
 nohup jupyter-notebook --ip=0.0.0.0 --no-browser --port=8907 &  # --port=포트번호  → 포트번호는 본인이 부여받은 port번호 사용
 
 # 웹 브라우저에서 jupyter notebook 실행
-http://18.182.177.124:8924/
+http://18.182.177.124:8907/
 
 # password
 # multi1234!  로 jupyter notebook 로그인
