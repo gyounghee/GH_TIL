@@ -5,6 +5,7 @@
  * 프로그래머스 → 2022 KAKAO BLIND RECRUITMENT - 신고결과 받기
  * 프로그래머스 → 위클리 챌린지 - 부족한 금액 계산하기
  * 프로그래머스 → 시저암호
+ * 프로그래머스 → 2019 KAKAO BLIND RECRUITMENT - 오픈채팅방
 
  #### * **SW Expert Academy**
  * SW Expert Academy → 평균값 구하기
