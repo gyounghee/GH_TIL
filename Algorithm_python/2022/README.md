@@ -44,7 +44,12 @@
  * SW Expert Academy → 중간 평균값 구하기
  * SW Expert Academy → 최빈수 구하기
  * SW Expert Academy → 백만장자 프로젝트  ▶ 다른 사람 코드 참고 ( 제한시간 초과 문제 ) 
-
+ * SW Expert Academy → 모음이 보이지 않는 사람
+ * SW Expert Academy → 거듭 제곱
+ * SW Expert Academy → 암호문3  ▶ 아직 안품
+ * SW Expert Academy → 원재의 메모리 복구하기
+ * SW Expert Academy → 암호생성기
+ 
  #### * **etc**
  * n^m구하기
  * power() 함수 작성
