@@ -50,6 +50,11 @@
  * SW Expert Academy → 암호문3  ▶ 아직 안품
  * SW Expert Academy → 원재의 메모리 복구하기
  * SW Expert Academy → 암호생성기
+ * SW Expert Academy → 소득 불균형
+ * SW Expert Academy → Magnetic
+ * SW Expert Academy → 쥬스 나누기
+ * SW Expert Academy → 제곱 팰린드롬 수
+ * SW Expert Academy → 비밀번호
  
  #### * **etc**
  * n^m구하기
