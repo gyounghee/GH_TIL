@@ -61,3 +61,24 @@ def solution(n):
 
 n = 5
 print(solution(n))
+
+
+# -------------------------------------------------
+# 다른 사람 풀이
+# '에라토스테네스의 체' 이용
+
+def solution(n):
+
+    sieve = [True]*(n+1) # 0~n까지 칸을 True로 초기화
+
+    m = int(n ** 0.5)  # 루트 n (제곱근 n)을 m 변수에 저장  -  어떤 자연수 n이 있을 때, √n 보다 작은 모든 소수들로 나누어 떨어지지 않으면 n은 소수
+    for i in range(2, m+1): # 2부터 √n까지 
+        if sieve[i] == True:  # 만약 해당 번호가 True면
+            for j in range(i*i, n+1, i): # 해당 번호 * 2 부터 n까지 해당 번호의 배수를 False로 만듦
+                sieve[j] = False
+
+    x = [i for i in range(2, n+1) if sieve[i] == True]  # sieve 리스트 요소 중 2 번째 부터 True인 수만 찾아서 x 리스트 생성
+    answer = len(x)    # answer은 x의 길
+    return answer
+
+
