@@ -42,7 +42,7 @@ SHOW TABLES;
   ```
   SELECT * FROM topic WHERE author = 'gyounghee';
   ```
-  - 정렬하기 ( ORDER BY 컬럼명 [DESC, ASC] )  
+  - 정렬하기 ( ORDER BY 컬럼명 [DESC, ASC] )   
   → 저자가 gyounghee인 컬럼들을 내림차순으로 정렬하여 2건만 조회
   ```
   SELECT * FROM topic 
