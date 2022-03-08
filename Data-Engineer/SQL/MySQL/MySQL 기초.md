@@ -31,11 +31,13 @@ SHOW TABLES;
   DESC TABLE명
   ```
 - TABLE에 값 추가
-  - ```
+  - 
+  ```
   INSERT INTO TABLE명(title, description, created, author, profile) VALUES ( 'MySQL', 'MySQL is ...', NOW(), 'gyounghee', 'developer' ); 
   ```
 - TABLE 내용 조회
-  - ```
+  - 
+  ```
   SELECT * FROM topic;
   ```
   - 조건에 맞는 내용 조회 ( WHERE )  
