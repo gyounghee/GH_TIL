@@ -11,12 +11,10 @@ SHOW TABLES;
   ```
   CREATE DATABASE DB명;
   ```
->
-> - DB 선택하기  
+ - DB 선택하기  
   - ```
   USE DB명;
   ```
->
 
 > **TABLE**
 - TABLE 만들기  
