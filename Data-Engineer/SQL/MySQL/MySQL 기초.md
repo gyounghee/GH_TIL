@@ -7,7 +7,10 @@ SHOW TABLES;
 
 > **DB**
 - DB 만들기  
-  - `CREATE DATABASE DB명;`
+  - 
+  ```
+  CREATE DATABASE DB명;
+  ```
 >
 > - DB 선택하기  
   - ```
