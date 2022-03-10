@@ -64,3 +64,16 @@ SHOW TABLES;
   ```
   DELETE FROM topic WHERE id = 5;
   ```
+  +) TALBE명 변경   
+  ```
+  RENAME TABLE 이전_테이블명 TO 새로운_테이블명;
+  또는 
+  ALTER TABLE 이전_테이블명 TO 새로운_테이블명;
+  또는 
+  RENAME TABLE 이전_테이블명1 TO 새로운_테이블명1,
+               이전_테이블명2 TO 새로운_테이블명2;
+  ```
+  +) 다른 DB로 테이블 이동
+  ```
+  RENAME TABLE 현재DB.테이블명 TO 이동할DB.테이블명;
+  ```
