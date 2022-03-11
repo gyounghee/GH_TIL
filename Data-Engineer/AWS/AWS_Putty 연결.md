@@ -6,10 +6,10 @@ conda info --envs   # 가상환경 목록 검색
 conda activate python3  #  가상환경 python3으로 실행
 
 # putty에서 jupyter notebook사용을 위한 명령어 
-nohup jupyter-notebook --ip=0.0.0.0 --no-browser --port=8907 &  # --port=포트번호  → 포트번호는 본인이 부여받은 port번호 사용
+nohup jupyter-notebook --ip=0.0.0.0 --no-browser --port=8916 &  # --port=포트번호  → 포트번호는 본인이 부여받은 port번호 사용
 
 # 웹 브라우저에서 jupyter notebook 실행
-http://18.182.177.124:8907/
+http://3.113.137.203:8916
 
 # password
 # multi1234!  로 jupyter notebook 로그인

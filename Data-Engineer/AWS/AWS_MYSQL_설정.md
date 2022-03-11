@@ -11,7 +11,7 @@ apt를 이용하여 mysql 을 설치
 
 설치 과정에서 y/n를 묻는 문구가 나오면, y 를 입력하여 설치
 	sudo apt install mysql-server
---apt-get install mysql-client
+--apt-get install mysql-client  # apt-get install mysql-client 이렇게 하니까 됐음
 
 3. mysql 설치 확인
 
