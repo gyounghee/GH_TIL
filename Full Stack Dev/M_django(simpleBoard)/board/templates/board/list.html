@@ -1,0 +1,52 @@
+{% extends 'board/base.html' %}
+{% block content %}
+<div class="container">
+  <table class='table'>
+    <thead>
+      <tr>
+        <th style='width: 5%'> 번호 </th>
+        <th style='width: 10% '> 작성날짜 </th>
+        <th style='width: 10%'> 작성자 </th>
+        <th> 제목 </th>
+
+        <!-- 글 수정과 글 삭제 컬럼을 추가-->
+        <th style='width: 5%'> </th>
+        <th style='width: 5%'> </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td> {{ forloop.counter }} </td>
+        <td> {{ row.createDate }} </td>
+        <td> {{ row.user }} </td>
+        <td>
+          <a href='view/?id={{row.id}}'>
+            {{ row.subject }}
+          </a>
+        </td>
+        <td>
+          <a href='update/?id={{row.id}}'>
+            <button type="submit" class="btn btn-warning">수정</button>
+          </a>
+        </td>
+        <td>
+          <form action='delete/' method='POST'>
+            {% csrf_token %}
+            <input type='hidden' name=id value={{row.id}}>
+            <button type="submit" class="btn btn-danger">삭제</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+</div>
+<div class="container">
+  <a href='write/'>
+    <button type="submit" class="btn btn-primary">게시글 작성하기</button>
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'board/base.html' %}
+{% block content %}
+<div class='container'>
+      <form action='../create/' method='POST'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="exampleInputPassword1">작성 날짜</label>
+          <input type="date" class="form-control" id='now_date' name='createDate'>
+          <script>
+            document.getElementById('now_date').valueAsDate = new Date();
+          </script>    
+        </div>
+    <!-- 로그인해야만 사용가능하니까 작성자는 로그인 한 유저name으로 고정시킨다. -->
+    <!-- <div class="form-group">
+      <label for="exampleInputEmail1">작성자</label>
+      <input type="text" class="form-control" placeholder="작성자" name='user'>
+    </div> -->
+    <div class="form-group">
+      <label for="exampleInputPassword1">글 제목</label>
+      <input type="text" class="form-control" name='subject'>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputFile">게시글</label>
+      <textarea class="form-control" rows=10 name='content'></textarea>
+    <button type="submit" class="btn btn-default">등록</button>
+  </form>
+</div>
+{% endblock %}
