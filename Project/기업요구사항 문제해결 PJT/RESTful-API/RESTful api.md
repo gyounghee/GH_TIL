@@ -52,226 +52,224 @@
 
 
 ### * restful api server 만들기 
+    +) api server를 테스트 하기 위한 툴 설치 
+        - 테스트 툴은 `insomnia` 활용 
 
-+) api server를 테스트 하기 위한 툴 설치 
-    - 테스트 툴은 `insomnia` 활용 
+    1. conda activate 가상환경
+        - 가상환경 : p_youtube
 
-1. conda activate 가상환경
-    - 가상환경 : p_youtube
+    2. pip install --upgrade pip 
 
-2. pip install --upgrade pip 
+    3. pip install django
 
-3. pip install django
+    4. django-admin startproject 프로젝트이름
+        - 프로젝트 이름 : restfulapiserver
 
-4. django-admin startproject 프로젝트이름
-    - 프로젝트 이름 : restfulapiserver
+    5. Django REST framework 사용을 위한 설치   
+        : 간단한 설정만으로 django를 restful api server로 만들어주는 프레임워크
+        - pip install djangorestframework
+        - pip install markdown
+        - pip install django-filter
 
-5. Django REST framework 사용을 위한 설치   
-    : 간단한 설정만으로 django를 restful api server로 만들어주는 프레임워크
-    - pip install djangorestframework
-    - pip install markdown
-    - pip install django-filter
-
-6. settings.py에 source 추가  
-    - 공식 홈페이지 참고 ( https://www.django-rest-framework.org/ )
-    1. ALLOEWED_HOST에 (*) 추가
-        ```python
-        ALLOWED_HOSTS = ['*']
-        ```
-    2. INSTALLED_APPS에 'rest_framework' 추가    
-        ```python
-        INSTALLED_APPS += [
-            'rest_framework'
-        ]
-        ```
-    3. REST_FRAMEWORK 추가  
-        ```python
-        REST_FRAMEWORK = {
-        'DEFAULT_PERMISSION_CLASSES': [
-            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-            ]
-        }
-        ```
-    - Django는 앱 단위로 관리하기 때문에 방금 설치한 rest_framework 앱을 명시해 주어야 하며, rest_framework에 권한 설정을 하기 위한 설정도 넣어줌
-
-7. 프로젝트폴더 > urls.py 에 코드 추가    
-    -   
-    ```python
-    from django.urls import path, include
-
-    urlpatterns = [
-    ...
-    path('api-auth/', include('rest_framework.urls')),
-    ]
-    ```
-
-8. superuser 생성
-    - python manage.py createsuperuser
-        - 생성한 id, pw, email
-        - id : superuser /  pw : 0000  / email : superuser@naver.com 
-
-9. python manage.py startapp 앱이름 
-    - 앱 이름 : addresses
-
-10. 앱폴더 > models.py에 모델 생성
-    -   
-    ```python
-    class Addresses(models.Model):
-    name = models.CharField(max_length=10)
-    address = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        # 조회 시 created를 기준으로 내림차순으로 표시됨 (순서대로 표시하기 위함)
-        ordering = ['created']
-    ```
-
-11. migration하기 
-    - python manage.py makemigrations 앱이름
-    - python manage.py migrate
-
-12. 앱폴더 > serializers.py 파일 생성 후 코드 추가   
-    - 
-    ```python
-    from rest_framework import serializers
-    from .models import Addresses    
-
-    class AddressesSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Addresses
-            fields = ['name','address','created']
-    ```
-
-13. 앱 폴더 > views.py   
-    -   
-    ```python
-    from django.shortcuts import render
-    from django.http import HttpResponse, JsonResponse
-    from django.views.decorators.csrf import csrf_exempt
-    from rest_framework.parsers import JSONParser
-
-    from .models import Addresses
-    from .serializers import AddressesSerializer
-
-    ## 모든 건수 조회하는 코드
-    @csrf_exempt
-    def address_list( request ) :
-        # GET요청이 들어오면 전체 address list를 내려주는  
-        if request.method == 'GET':
-            query_set = Addresses.objects.all()
-            serializer = AddressesSerializer(query_set, many=True)  
-            return JsonResponse(serializer.data, safe=False)
-        
-        # POST 요청이 들어오면 만들어주도록 
-        elif request.method == 'POST':
-            data = JSONParser().parse(request)
-            serializer = AddressesSerializer(data=data)
-            if serializer.is_valid() :    
-                serializer.save()   
-                return JsonResponse(serializer.data, status=201)  
-            return JsonResponse(serializer.errors, status=400)  
-    ```
-
-14. 프로젝트폴더 > urls.py 에 코드 추가 
-    -      
-    ```python
-    from django.contrib import admin
-    from django.urls import path, include
-    from addresses import views  
-
-    urlpatterns = [
-        path('admin/', admin.site.urls),
-        path('api-auth/', include('rest_framework.urls')),
-        path('addresses/', views.address_list),
-]
-    ```
-
-15. (선택) 시간 설정을 한국시간으로 설정
-    - 프로젝트 폴터 > settings.py
-    ```python
-    # 변경해줘야할 코드
-    TIME_ZONE = 'Asia/Seoul'
-    USE_TZ = False
-    ```
-
-
-# **TEST** - `insomnia`
-    - `Ctrl+N`을 하여 request생성
-        1. GET http://127.0.0.1:8000/addresses/
-            - 저장된 데이터들이 JSON형태로 보이면 성공
-        
-        2. POST http://127.0.0.1:8000/addresses/
-            - JSON 형태로 데이터를 보내줘야함 
+    6. settings.py에 source 추가  
+        - 공식 홈페이지 참고 ( https://www.django-rest-framework.org/ )
+        1. ALLOEWED_HOST에 (*) 추가
             ```python
-            {
-                "name" : "경이",
-                "address" : "집"
+            ALLOWED_HOSTS = ['*']
+            ```
+        2. INSTALLED_APPS에 'rest_framework' 추가    
+            ```python
+            INSTALLED_APPS += [
+                'rest_framework'
+            ]
+            ```
+        3. REST_FRAMEWORK 추가  
+            ```python
+            REST_FRAMEWORK = {
+            'DEFAULT_PERMISSION_CLASSES': [
+                'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+                ]
             }
             ```
+        - Django는 앱 단위로 관리하기 때문에 방금 설치한 rest_framework 앱을 명시해 주어야 하며, rest_framework에 권한 설정을 하기 위한 설정도 넣어줌
 
-            - 결과가 이렇게 나온다면 성공 
-            ```python
+    7. 프로젝트폴더 > urls.py 에 코드 추가    
+        -   
+        ```python
+        from django.urls import path, include
+
+        urlpatterns = [
+        ...
+        path('api-auth/', include('rest_framework.urls')),
+        ]
+        ```
+
+    8. superuser 생성
+        - python manage.py createsuperuser
+            - 생성한 id, pw, email
+            - id : superuser /  pw : 0000  / email : superuser@naver.com 
+
+    9. python manage.py startapp 앱이름 
+        - 앱 이름 : addresses
+
+    10. 앱폴더 > models.py에 모델 생성
+        -   
+        ```python
+        class Addresses(models.Model):
+        name = models.CharField(max_length=10)
+        address = models.TextField()
+        created = models.DateTimeField(auto_now_add=True)
+            class Meta:
+                # 조회 시 created를 기준으로 내림차순으로 표시됨 (순서대로 표시하기 위함)
+                ordering = ['created']
+        ```
+
+    11. migration하기 
+        - python manage.py makemigrations 앱이름
+        - python manage.py migrate
+
+    12. 앱폴더 > serializers.py 파일 생성 후 코드 추가   
+        - 
+        ```python
+        from rest_framework import serializers
+        from .models import Addresses    
+
+        class AddressesSerializer(serializers.ModelSerializer):
+            class Meta:
+                model = Addresses
+                fields = ['name','address','created']
+        ```
+
+    13. 앱 폴더 > views.py   
+        -   
+        ```python
+        from django.shortcuts import render
+        from django.http import HttpResponse, JsonResponse
+        from django.views.decorators.csrf import csrf_exempt
+        from rest_framework.parsers import JSONParser
+
+        from .models import Addresses
+        from .serializers import AddressesSerializer
+
+        ## 모든 건수 조회하는 코드
+        @csrf_exempt
+        def address_list( request ) :
+            # GET요청이 들어오면 전체 address list를 내려주는  
+            if request.method == 'GET':
+                query_set = Addresses.objects.all()
+                serializer = AddressesSerializer(query_set, many=True)  
+                return JsonResponse(serializer.data, safe=False)
+            
+            # POST 요청이 들어오면 만들어주도록 
+            elif request.method == 'POST':
+                data = JSONParser().parse(request)
+                serializer = AddressesSerializer(data=data)
+                if serializer.is_valid() :    
+                    serializer.save()   
+                    return JsonResponse(serializer.data, status=201)  
+                return JsonResponse(serializer.errors, status=400)  
+        ```
+
+    14. 프로젝트폴더 > urls.py 에 코드 추가 
+        -      
+        ```python
+        from django.contrib import admin
+        from django.urls import path, include
+        from addresses import views  
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('api-auth/', include('rest_framework.urls')),
+            path('addresses/', views.address_list),
+    ]
+        ```
+
+    15. (선택) 시간 설정을 한국시간으로 설정
+        - 프로젝트 폴터 > settings.py
+        ```python
+        # 변경해줘야할 코드
+        TIME_ZONE = 'Asia/Seoul'
+        USE_TZ = False
+        ```
+
+
+    # **TEST** - `insomnia`
+        - `Ctrl+N`을 하여 request생성
+            1. GET http://127.0.0.1:8000/addresses/
+                - 저장된 데이터들이 JSON형태로 보이면 성공
+            
+            2. POST http://127.0.0.1:8000/addresses/
+                - JSON 형태로 데이터를 보내줘야함 
+                ```python
                 {
-                    "name": "경이",
-                    "address": "집",
-                    "created": "2022-03-22T10:08:45.107967Z"
+                    "name" : "경이",
+                    "address" : "집"
                 }
-            ```
+                ```
 
-**위에서 했던 것이 다수의 건수를 조회하는 코드였다면 이번에는 단건 조회에 대해 살펴보자.**
+                - 결과가 이렇게 나온다면 성공 
+                ```python
+                    {
+                        "name": "경이",
+                        "address": "집",
+                        "created": "2022-03-22T10:08:45.107967Z"
+                    }
+                ```
 
-16. 앱 폴더 > views.py
-    - 단건 조회 코드 추가  
-    ```python
-    @csrf_exempt
-    def address( request, pk ) :   # 단건 조회
-        select_adr = Addresses.objects.get(pk=pk)
+    **위에서 했던 것이 다수의 건수를 조회하는 코드였다면 이번에는 단건 조회에 대해 살펴보자.**
 
-        if request.method == 'GET':
-            serializer = AddressesSerializer(select_adr)  
-            return JsonResponse(serializer.data, safe=False)
-        
-        elif request.method == 'PUT' :
-            data = JSONParser().parse(request)
-            serializer = AddressesSerializer(select_adr, data=data)
-            if serializer.is_valid() :    
-                serializer.save()  
-                return JsonResponse(serializer.data, status=201) 
-            return JsonResponse(serializer.errors, status=400)
+    16. 앱 폴더 > views.py
+        - 단건 조회 코드 추가  
+        ```python
+        @csrf_exempt
+        def address( request, pk ) :   # 단건 조회
+            select_adr = Addresses.objects.get(pk=pk)
 
-        elif request.method == 'DELETE' :
-            select_adr.delete()  
-            return HttpResponse(status=204) 
-    ```
+            if request.method == 'GET':
+                serializer = AddressesSerializer(select_adr)  
+                return JsonResponse(serializer.data, safe=False)
+            
+            elif request.method == 'PUT' :
+                data = JSONParser().parse(request)
+                serializer = AddressesSerializer(select_adr, data=data)
+                if serializer.is_valid() :    
+                    serializer.save()  
+                    return JsonResponse(serializer.data, status=201) 
+                return JsonResponse(serializer.errors, status=400)
 
-17. 프로젝트 폴더 > urls.py
-    - urlpatterns = [] 에 코드 추가
-    ```python
-    path('addresses/<int:pk>', views.address),
-    ```
+            elif request.method == 'DELETE' :
+                select_adr.delete()  
+                return HttpResponse(status=204) 
+        ```
+
+    17. 프로젝트 폴더 > urls.py
+        - urlpatterns = [] 에 코드 추가
+        ```python
+        path('addresses/<int:pk>', views.address),
+        ```
 
 
-**이번엔 DB에 저장된 PW가 사용자가 입력한 PW가 맞는지 확인 후 응답보내기**
+    **이번엔 DB에 저장된 PW가 사용자가 입력한 PW가 맞는지 확인 후 응답보내기**
 
-18. 앱 폴더 > views.py
-    - 코드 추가
-    ```python
-    @csrf_exempt
-    def login(request) :
-        if request.method == 'POST':
-            data = JSONParser().parse(request)
-            search_name = data['name']
-            select_adr = Addresses.objects.get(name=search_name)
-            # print(data['address'])     #  읽어온 비밀번호
-            # print(select_adr.address)  #  저장된 비밀번호 
-            if data['address'] == select_adr.address :
-                return HttpResponse(status=200)
-            else :
-                return HttpResponse(status=400)
-    ```
+    18. 앱 폴더 > views.py
+        - 코드 추가
+        ```python
+        @csrf_exempt
+        def login(request) :
+            if request.method == 'POST':
+                data = JSONParser().parse(request)
+                search_name = data['name']
+                select_adr = Addresses.objects.get(name=search_name)
+                # print(data['address'])     #  읽어온 비밀번호
+                # print(select_adr.address)  #  저장된 비밀번호 
+                if data['address'] == select_adr.address :
+                    return HttpResponse(status=200)
+                else :
+                    return HttpResponse(status=400)
+        ```
 
-19. 프로젝트 폴더 > urls.py
-    - urlpatterns =[] 에 코드 추가
-    ```python
-    path('login/', views.login),
-    ```
+    19. 프로젝트 폴더 > urls.py
+        - urlpatterns =[] 에 코드 추가
+        ```python
+        path('login/', views.login),
+        ```
