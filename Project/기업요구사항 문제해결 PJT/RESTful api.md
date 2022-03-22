@@ -57,12 +57,14 @@
     - 테스트 툴은 `insomnia` 활용 
 
 1. conda activate 가상환경
+    - 가상환경 : p_youtube
 
 2. pip install --upgrade pip 
 
 3. pip install django
 
 4. django-admin startproject 프로젝트이름
+    - 프로젝트 이름 : restfulapiserver
 
 5. Django REST framework 사용을 위한 설치   
     : 간단한 설정만으로 django를 restful api server로 만들어주는 프레임워크
@@ -109,6 +111,7 @@
         - id : superuser /  pw : 0000  / email : superuser@naver.com 
 
 9. python manage.py startapp 앱이름 
+    - 앱 이름 : addresses
 
 10. 앱폴더 > models.py에 모델 생성
     -   
@@ -150,7 +153,7 @@
     from .models import Addresses
     from .serializers import AddressesSerializer
 
-
+    ## 모든 건수 조회하는 코드
     @csrf_exempt
     def address_list( request ) :
         # GET요청이 들어오면 전체 address list를 내려주는  
@@ -214,3 +217,61 @@
                     "created": "2022-03-22T10:08:45.107967Z"
                 }
             ```
+
+**위에서 했던 것이 다수의 건수를 조회하는 코드였다면 이번에는 단건 조회에 대해 살펴보자.**
+
+16. 앱 폴더 > views.py
+    - 단건 조회 코드 추가  
+    ```python
+    @csrf_exempt
+    def address( request, pk ) :   # 단건 조회
+        select_adr = Addresses.objects.get(pk=pk)
+
+        if request.method == 'GET':
+            serializer = AddressesSerializer(select_adr)  
+            return JsonResponse(serializer.data, safe=False)
+        
+        elif request.method == 'PUT' :
+            data = JSONParser().parse(request)
+            serializer = AddressesSerializer(select_adr, data=data)
+            if serializer.is_valid() :    
+                serializer.save()  
+                return JsonResponse(serializer.data, status=201) 
+            return JsonResponse(serializer.errors, status=400)
+
+        elif request.method == 'DELETE' :
+            select_adr.delete()  
+            return HttpResponse(status=204) 
+    ```
+
+17. 프로젝트 폴더 > urls.py
+    - urlpatterns = [] 에 코드 추가
+    ```python
+    path('addresses/<int:pk>', views.address),
+    ```
+
+
+**이번엔 DB에 저장된 PW가 사용자가 입력한 PW가 맞는지 확인 후 응답보내기**
+
+18. 앱 폴더 > views.py
+    - 코드 추가
+    ```python
+    @csrf_exempt
+    def login(request) :
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            search_name = data['name']
+            select_adr = Addresses.objects.get(name=search_name)
+            # print(data['address'])     #  읽어온 비밀번호
+            # print(select_adr.address)  #  저장된 비밀번호 
+            if data['address'] == select_adr.address :
+                return HttpResponse(status=200)
+            else :
+                return HttpResponse(status=400)
+    ```
+
+19. 프로젝트 폴더 > urls.py
+    - urlpatterns =[] 에 코드 추가
+    ```python
+    path('login/', views.login),
+    ```
