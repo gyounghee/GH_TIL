@@ -94,7 +94,6 @@
         - Django는 앱 단위로 관리하기 때문에 방금 설치한 rest_framework 앱을 명시해 주어야 하며, rest_framework에 권한 설정을 하기 위한 설정도 넣어줌
 
     7. 프로젝트폴더 > urls.py 에 코드 추가    
-        -   
         ```
         from django.urls import path, include
 
@@ -113,7 +112,6 @@
         - 앱 이름 : addresses
 
     10. 앱폴더 > models.py에 모델 생성
-        -   
         ```
         class Addresses(models.Model):
         name = models.CharField(max_length=10)
@@ -129,7 +127,6 @@
         -  manage.py migrate
 
     12. 앱폴더 > serializers.py 파일 생성 후 코드 추가   
-        - 
         ```
         from rest_framework import serializers
         from .models import Addresses    
@@ -141,7 +138,6 @@
         ```
 
     13. 앱 폴더 > views.py   
-        -   
         ```
         from django.shortcuts import render
         from django.http import HttpResponse, JsonResponse
@@ -170,8 +166,7 @@
                 return JsonResponse(serializer.errors, status=400)  
         ```
 
-    14. 프로젝트폴더 > urls.py 에 코드 추가 
-        -      
+    14. 프로젝트폴더 > urls.py 에 코드 추가    
         ```
         from django.contrib import admin
         from django.urls import path, include
@@ -273,3 +268,230 @@
         ```
         path('login/', views.login),
         ```
+
+
+
+
+
+### vue.js와 django 연동하여 CRUD REST 실습
+1. conda activate 가상환경
+    - 가상환경 : practice
+
+2. pip install --upgrade pip 
+
+3. pip install django
+
+4. django-admin startproject 프로젝트이름
+    - 프로젝트 이름 : dogtest
+
+5. python manage.py startapp 앱이름
+    - 앱 이름 : dogtest_app
+
+6. Django REST framework 사용을 위한 설치   
+    - pip install djangorestframework
+
+7. settings.py에 source 추가  
+    - 공식 홈페이지 참고 ( https://www.django-rest-framework.org/ )
+    1. ALLOEWED_HOST에 (*) 추가
+        ```
+        ALLOWED_HOSTS = ['*']
+        ```
+    2. INSTALLED_APPS에 'rest_framework' 추가    
+        ```
+        INSTALLED_APPS += [
+            'rest_framework'
+        ]
+        ```
+    3. REST_FRAMEWORK 추가  
+        ```
+        REST_FRAMEWORK = {
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+            ]
+        }
+        ```
+
+8. 모델 생성 & migration
+    1. 모델 생성
+        - 프로젝트 폴더 > models.py
+        ```
+        from django.db import models
+
+        # Create your models here.
+        class Serviceuser(models.Model):
+            user_id = models.CharField(max_length=15, primary_key=True)
+            user_pw = models.CharField(max_length=20)
+            created = models.DateTimeField(auto_now_add=True)
+            class Meta:
+                ordering = ['created']
+        ```
+    2. migration
+        - python manage.py makemigrations 
+        - python manage.py migrate 
+
+9. 앱 폴더 > serializers.py 생성
+    ```
+    from rest_framework import serializers
+    from .models import Serviceuser
+
+    class ServiceuserSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Serviceuser
+            fields = '__all__'
+    ```
+
+10. 앱 폴더 > viewsets.py  생성
+    ```
+    from rest_framework import viewsets
+    from .models import Serviceuser
+    from .serializers import ServiceuserSerializer
+
+    class ServiceuserViewSet(viewsets.ModelViewSet) :
+        queryset = Serviceuser.objects.all()
+        serializer_class = ServiceuserSerializer
+    ```
+
+11. 프로젝트 폴더 > routers.py 생성
+    ```
+    # 주소와 보여질 데이터를 정의해 놓은 ServiceuserViewSet과 연결
+    from rest_framework import routers
+    from dogtest_app.viewsets import ServiceuserViewSet
+
+    router = routers.DefaultRouter()
+
+    # 주소는 localhost:8000/dogtest 로 시작하게 됨
+    router.register(r'dogtest', ServiceuserViewSet)
+    ```
+
+12. 프로젝트 폴더 > urls.py에 코드 추가 
+    ```
+    from django.contrib import admin
+    from django.urls import path, include
+
+    from .routers import router
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+
+        # /api/dogtest 로 접속했을때 api-dogtest가 잘 작동하는지 테스트
+        path('api/', include(router.urls)),
+    ]
+    ```
+
+
+
+비밀번호 암호화 방법
+    - 장고는 암호 알고리즘을 이용한 암호화 함수를 기본적으로 제공
+    - 장고에서는 해싱 알고리즘으로 `Argon2` 사용 권장
+    - pip install argon2-cffi 
+
+프로젝트 폴더 > settings.py에 PASSWORD_HASHERS 코드 추가 (안해도되는건가?)
+    ```
+    PASSWORD_HASHERS = [
+        'django.contrib.auth.hashers.Argon2PasswordHasher',
+        'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+        'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+        'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+        'django.contrib.auth.hashers.ScryptPasswordHasher',
+    ]
+    ```
+
+앱 폴더 > views.py 에 PasswordHasher 임포트
+    - import 추가하고 회원 생성하는 부분 수정
+    ```
+    from argon2 import PasswordHasher    
+    ...
+    def signup(request):
+        ...
+    
+        elif request.method == "POST" :
+        data = JSONParser().parse(request)
+        data['user_pw'] = PasswordHasher().hash(data['user_pw'])
+        serializer = ServiceuserSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        return JsonResponse(serializer.errors, status=400)
+    ```
+
+로그인 시 입력받은 비밀번호 일치여부를 확인하기 위해서는 PasswordHasher().verify()함수 이용
+    - PasswordHasher().verify(암호화된 비밀번호, 입력받은 비밀번호)
+    - 앱 폴더 > views.py 의 def login( request ) 함수 수정
+    ```
+    @csrf_exempt
+    def login( request ):
+        if request.method == "POST":
+            data = JSONParser().parse(request)
+            input_id,  input_pw = data['user_id'],  data['user_pw']
+            user_data = Serviceuser.objects.get(user_id=input_id)
+            # DB에 저장된 id와 pw가 입력한 id와 pw가 일치한다면 status = 200
+            try : 
+                if user_data.user_id == input_id and PasswordHasher().verify(user_data.user_pw, input_pw) :
+                    return HttpResponse(status = 200)
+            except : 
+                return HttpResponse(status=400)
+    ```
+
+
+
+
+
+
+
+----------------- Vue.js와 Django 연결 -----------------
+
+13. 앱 폴더 안에 templates 폴더 생성 > 앱 폴더 생성 > index.html 파일 생성
+    ```
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="icon" href="<%= BASE_URL %>dog.ico">
+        <title>강아지 정상/비만 판별기</title>
+    </head>
+    <body>
+        <noscript>
+        <strong>We're sorry but 강아지 정상/비만 판별기 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        </noscript>
+        <div id="app"></div>
+        <!-- built files will be auto injected -->
+    </body>
+    </html>
+    ```
+
+14. 프로젝트 폴더 > urls.py 코드 업데이트
+    ```
+    from django.contrib import admin
+    from django.urls import path, include
+
+    from .routers import router
+    from django.views.generic import TemplateView
+
+    urlpatterns = [
+        path('admin/', admin.site.urls),
+        # /api/dogtest 로 접속했을때 api-dogtest가 잘 작동하는지 테스트
+        path('api/', include(router.urls)),
+        path('dogtest', TemplateView.as_view(template_name='dogtest/index.html')),    
+    ]
+    ```
+
+15. `vuter` 라는 확장파일 설치 & 터미널에서 vue cli설치
+    - npm install -g @vue/cli
+
+16. 프로젝트 생성
+    - vue create 프로젝트명 
+        - 프로젝트명 : dogtest_web  / defalut로 설치
+
+17. 생성된 프로젝트로 이동 후 서버가 잘 돌아가는지 확인
+    - cd dogtest_web
+    - npm run serve 
+
+18. 생성한 프로젝트 파일 안에 소영님이 만드신 vue.js파일 복사하여 넣고 다시 실행
+    - npm run serve
+
+
+터미널에 npm install vue-router -save하니까 
+package.json 의  dependencies : { ... , "vue-route": "^1.5.1",  ... } 가 추가됨 
+- 여기서 -save는 package.json 파일에 자동으로 dependencies에 등록해주는 역할
