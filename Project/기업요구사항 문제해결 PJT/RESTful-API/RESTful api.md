@@ -363,6 +363,8 @@
     router.register(r'dogtest', ServiceuserViewSet)
     ```
 
+
+
 12. 프로젝트 폴더 > urls.py에 코드 추가 
     ```
     from django.contrib import admin
@@ -378,42 +380,76 @@
     ]
     ```
 
+→→→→ 회원가입, 로그인 기능 구현
 
-비밀번호 암호화 방법
-    - 장고는 암호 알고리즘을 이용한 암호화 함수를 기본적으로 제공
-    - 장고에서는 해싱 알고리즘으로 `Argon2` 사용 권장
-    - pip install argon2-cffi 
+1. 회원가입 할 때 중복된 id가 있는지 확인하는 코드
+    - 앱폴더 > views.py
+    ```
+    from django.views.decorators.csrf import csrf_exempt
+     ...
 
-프로젝트 폴더 > settings.py에 PASSWORD_HASHERS 코드 추가 (안해도되는건가?)
-    ```
-    PASSWORD_HASHERS = [
-        'django.contrib.auth.hashers.Argon2PasswordHasher',
-        'django.contrib.auth.hashers.PBKDF2PasswordHasher',
-        'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
-        'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
-        'django.contrib.auth.hashers.ScryptPasswordHasher',
-    ]
+    @csrf_exempt
+    def signup( request ):
+        # GET요청이 들어오면 사용자가 입력한 ID와 기존의 ID가 일치하는지 여부 검사
+        if request.method == "GET" :
+            data = JSONParser().parse(request)
+            desired_id = data['user_id']
+            # exist_id = Serviceuser.objects.get(user_id = desired_id)
+            try : 
+                if Serviceuser.objects.get(user_id = desired_id) :   # 존재하면
+                    return HttpResponse(status=200)
+            except:
+                return HttpResponse(status=203)
     ```
 
-앱 폴더 > views.py 에 PasswordHasher 임포트
-    - import 추가하고 회원 생성하는 부분 수정
-    ```
-    from argon2 import PasswordHasher    
-    ...
-    def signup(request):
+2. POST방식으로 요청이 들어오면 회원가입 성공
+   - 앱폴더 > views.py 의 def signup(request) : 에 추가
+   ```
+    elif request.method == "POST" :
+            data = JSONParser().parse(request)
+            data['user_pw'] = PasswordHasher().hash(data['user_pw'])
+            serializer = ServiceuserSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
+   ```
+
+    2-1. 비밀번호 암호화 방법
+        - 장고는 암호 알고리즘을 이용한 암호화 함수를 기본적으로 제공
+        - 장고에서는 해싱 알고리즘으로 `Argon2` 사용 권장
+        - pip install argon2-cffi 
+
+    2-2. 프로젝트 폴더 > settings.py에 PASSWORD_HASHERS 코드 추가 (안해도되는건가?)
+        ```
+        PASSWORD_HASHERS = [
+            'django.contrib.auth.hashers.Argon2PasswordHasher',
+            'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+            'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+            'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+            'django.contrib.auth.hashers.ScryptPasswordHasher',
+        ]
+        ```
+
+    2-3. 앱 폴더 > views.py 에 PasswordHasher 임포트
+        - import 추가하고 회원 생성하는 부분 수정
+        ```
+        from argon2 import PasswordHasher    
         ...
-    
-        elif request.method == "POST" :
-        data = JSONParser().parse(request)
-        data['user_pw'] = PasswordHasher().hash(data['user_pw'])
-        serializer = ServiceuserSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return JsonResponse(serializer.data, status=201)
-        return JsonResponse(serializer.errors, status=400)
+        def signup(request):
+            ...
+        
+            elif request.method == "POST" :
+            data = JSONParser().parse(request)
+            data['user_pw'] = PasswordHasher().hash(data['user_pw'])
+            serializer = ServiceuserSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return JsonResponse(serializer.data, status=201)
+            return JsonResponse(serializer.errors, status=400)
     ```
 
-로그인 시 입력받은 비밀번호 일치여부를 확인하기 위해서는 PasswordHasher().verify()함수 이용
+3. 로그인 시 입력받은 비밀번호 일치여부를 확인하기 위해서는 PasswordHasher().verify()함수 이용
     - PasswordHasher().verify(암호화된 비밀번호, 입력받은 비밀번호)
     - 앱 폴더 > views.py 의 def login( request ) 함수 수정
     ```
@@ -431,6 +467,28 @@
                 return HttpResponse(status=400)
     ```
 
++) 테스트 확인을 위해 임시로 유저 리스트 확인과 삭제 코드도 만듦
+    ``` 
+    @csrf_exempt
+    def user_list( request ) :
+        # GET요청이 들어오면 전체 address list를 내려주는  
+        if request.method == 'GET':
+            query_set = Serviceuser.objects.all()
+            serializer = ServiceuserSerializer(query_set, many=True)  # many옵션은 다수의 queryset형태를 serializer화 하고자 할 때 사용 
+            return JsonResponse(serializer.data, safe=False)
+        elif request.method == "DELETE":
+            data = JSONParser().parse(request)
+            user_data = Serviceuser.objects.get(user_id=data['user_id'])
+            user_data.delete()
+            return HttpResponse(status=200)
+    ```
+
+
+→→→→→  학습된 모델을 백엔드에 넣어야 함
+1. 앱 폴더 > app.py
+    - 
+
+
 
 
 
@@ -439,7 +497,7 @@
 
 ----------------- Vue.js와 Django 연결 -----------------
 
-13. 앱 폴더 안에 templates 폴더 생성 > 앱 폴더 생성 > index.html 파일 생성
+1. 앱 폴더 안에 templates 폴더 생성 > 앱 폴더 생성 > index.html 파일 생성
     ```
     <!DOCTYPE html>
     <html lang="en">
@@ -460,7 +518,7 @@
     </html>
     ```
 
-14. 프로젝트 폴더 > urls.py 코드 업데이트
+2. 프로젝트 폴더 > urls.py 코드 업데이트
     ```
     from django.contrib import admin
     from django.urls import path, include
@@ -476,18 +534,18 @@
     ]
     ```
 
-15. `vuter` 라는 확장파일 설치 & 터미널에서 vue cli설치
+3. `vuter` 라는 확장파일 설치 & 터미널에서 vue cli설치
     - npm install -g @vue/cli
 
-16. 프로젝트 생성
+4. 프로젝트 생성
     - vue create 프로젝트명 
         - 프로젝트명 : dogtest_web  / defalut로 설치
 
-17. 생성된 프로젝트로 이동 후 서버가 잘 돌아가는지 확인
+5. 생성된 프로젝트로 이동 후 서버가 잘 돌아가는지 확인
     - cd dogtest_web
     - npm run serve 
 
-18. 생성한 프로젝트 파일 안에 소영님이 만드신 vue.js파일 복사하여 넣고 다시 실행
+6. 생성한 프로젝트 파일 안에 소영님이 만드신 vue.js파일 복사하여 넣고 다시 실행
     - npm run serve
 
 
