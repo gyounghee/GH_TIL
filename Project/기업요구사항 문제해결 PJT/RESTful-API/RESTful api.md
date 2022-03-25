@@ -495,7 +495,8 @@
 
 
 
------------------ Vue.js와 Django 연결 -----------------
+
+<!-- ----------------- Vue.js와 Django 연결 -----------------
 
 1. 앱 폴더 안에 templates 폴더 생성 > 앱 폴더 생성 > index.html 파일 생성
     ```
@@ -512,8 +513,7 @@
         <noscript>
         <strong>We're sorry but 강아지 정상/비만 판별기 doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
         </noscript>
-        <div id="app"></div>
-        <!-- built files will be auto injected -->
+        <div id="app"></div> 
     </body>
     </html>
     ```
@@ -551,4 +551,4 @@
 
 터미널에 npm install vue-router -save하니까 
 package.json 의  dependencies : { ... , "vue-route": "^1.5.1",  ... } 가 추가됨 
-- 여기서 -save는 package.json 파일에 자동으로 dependencies에 등록해주는 역할
+- 여기서 -save는 package.json 파일에 자동으로 dependencies에 등록해주는 역할 -->
