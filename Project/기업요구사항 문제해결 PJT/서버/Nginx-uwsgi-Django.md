@@ -19,11 +19,13 @@ ________________________________________________________________________________
 - cd 폴더로 들어가기  (cd try)
 
 5. docker 설치
+- su로 들어가서 
 - curl -fsSL https://get.docker.com/ | sudo sh
 - 항상 docker설치 후 docker에 대한 권한을 현재 사용자한테 허가해줘야함 
-- sudo usermod -aG docker $USER
+- sudo usermod -aG docker $USER  
 	- 저렇게 했는데 lab16유저에 권한 할당이 안돼서
 	- 다시 su로 들어가서 usermod -aG docker lab16  해줬더니 됨 
+    - su 에서 유저로 빠져나와서 id로 도커권한이 할당 되었는지 확인
 - 권한을 주고 바로 적용안되고 껐다 켜야 적용되는 것 같음 아닐수도~
 
 
@@ -55,7 +57,7 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
 - esc 하고 wq! 하여 빠져나옴
 
 7. 
-- docker build -t try/django .  ( Dockerfile이 있는 docker-server/try 경로에서 실행)
+- docker build -t try/django .  ( Dockerfile이 있는 docker-server 경로에서 실행)
 - docker image ls  하여 확인
 
 8. 만들어진 이미지 실행
@@ -199,7 +201,7 @@ http {
 - vi nginx-app.conf   ( 실제 django에 대한 서버 정의가 되어있는 )
 ```
 upstream uwsgi {
-    server unix:/srv/docker-server/apps.sock;
+    server unix:/srv/docker-server/django.sock;   # 아까 적은 socket이름 적으면 됨
 }
 
 server {
@@ -233,7 +235,7 @@ COPY nginx-app.conf /etc/nginx/sites-available/
 RUN mkdir -p /etc/nginx/sites-enabled/\
     && ln -s /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-enabled/
 
-EXPOSE 80
+EXPOSE 8900
 CMD ["nginx", "-g", "daemon off;"]
 ```
 esc    :wq!
