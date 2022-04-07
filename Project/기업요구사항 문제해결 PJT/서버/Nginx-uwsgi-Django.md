@@ -1,6 +1,23 @@
-docker를 이용하여 컨테이너를 만들면 이미지로 따로 만들 수 있어서 aws ec2가 우분투가 아닌 새로 만든 서버에 쉽게 옮겨서 사용 가능함, 쉽게 서버 배포 가능
-서비스가 확장되어 서버를 늘려야할 때 그 이미지를 복사해서 설치만하면 되기 때문에 편리
-관리하는 툴인 오케스트라가 여러가지 도구가 많아서 쉽게 배포, 관리가 가능
+* docker를 사용하는 이유
+    1. docker를 이용하여 컨테이너를 만들면 이미지로 따로 만들 수 있어서 aws ec2가 우분투가 아닌 새로 만든 서버에 쉽게 옮겨서 사용 가능함 즉, 쉽게 서버 배포 가능
+    2. 서비스가 확장되어 서버를 늘려야할 때 그 이미지를 복사해서 설치만하면 되기 때문에 편리
+    3. 관리하는 툴인 오케스트라가 여러가지 도구가 많아서 쉽게 배포, 관리가 가능
+
+* 전체적인 구조
+- Web Client 
+    - Djagno 서버로 API를 호출하는 앱 또는 웹
+- Web Server
+    - client로부터 request를 받아 뒤에 웹 어플리케이션으로 전달하고, 그에 대한 response를 다시 client로 전달하는 역할
+    - ex) Nginx, apache, ... 등
+- Socket 
+    - Web Server와 WSGI 사이에는 Socket이 있는데 이는 Web Server와 WSGI 사이에 데이터를 주고 받기 위한 인터페이스로 사용된다.
+    - Socket은 네트워크를 사용한 HTTP 소켓이 될 수도 있고, 파일을 사용한 소켓(Linux전용)이 될 수도 있음
+- WSGI ( Web Server Gateway Interface )
+    - Web Server와 Web Framework 사이에 통신을 담당하는 인터페이스로 Web Server와 Django사이에 통신을 담당
+    - WSGI의 종류는 여러 가지가 있는데, 내가 지금 사용할 것은 uWSGI
+        - WSGI는 개념이고, 그것을 구현한 것 중 하나가 uWSGI임.
+- Django
+    - 보안이 우수하고 유지보수가 편리한 웹 사이트를 신속하게 개발하도록 도움을 주는 Python Web Framework
 
 _________________________________________________________________________________
 Docker 사용하여 Nginx와 Django 띄우기
@@ -42,6 +59,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN apt-get -y update
 RUN apt-get -y install vim
+RUN apt-get -y install libgl1-mesa-glx
 
 RUN mkdir /srv/docker-server
 ADD . /srv/docker-server
@@ -61,14 +79,7 @@ CMD ["python", "manage.py", "runserver", "0.0.0.0:9000"]
 - docker image ls  하여 확인
 
 8. 만들어진 이미지 실행
-- docker run try/django
-
-+) ImportError발생
-- Dockerfile에 
-```
-RUN apt-get -y install libgl1-mesa-glx 
-```
-추가해주고 다시  docker build -t try/django . 로 잘 되나 확인
+- docker run try/django [ x ]
 
 9.  데몬형태..?로 실행
 - docker run -d try/django [ x , port mapping옵션 필요 ]
