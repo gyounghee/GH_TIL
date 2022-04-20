@@ -1,4 +1,4 @@
-# 아 몰라 일단 보루 ;;;
+# 아 몰라 일단 보 ;;;
 def n_sort(n):
     tmp_1,tmp_2 = [],[]
     for i in range(len(n)):
