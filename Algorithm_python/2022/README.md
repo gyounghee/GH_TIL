@@ -17,6 +17,8 @@
  * 프로그래머스 → Summer/Winter Coding(2019) - 멀쩡한 사각형  ▶ (다른 사람 풀이 참고..ㅜ)
  * 프로그래머스 → 2020 KAKAO BLIND RECRUITMENT - 괄호 변환 ▶▶▶▶ 푸는 중
  * 프로그래머스 → 문자열 내 마음대로 정렬하기
+ * 프로그래머스 → 이상한 문자 만들기
+* 프로그래머스 → x만큼 간격이 있는 n개의 숫자
 
  #### * **SW Expert Academy**
  * SW Expert Academy → 평균값 구하기
