@@ -30,3 +30,25 @@ print(solution(strings, n))   # ["car", "bed", "sun"]
 strings = ["abce", "abcd", "cdx"]
 n = 2
 print(solution(strings, n))   # ["abcd", "abce", "cdx"]
+
+
+
+## 다른 풀이
+# operator.itemgetter 모듈 사용
+#  - sorted와 같은 함수의 key 매개변수에 적용되어 다중 수준의 정렬을 가능하게 해주는 모듈
+
+from operator import itemgetter
+
+def solution(strings, n):
+    answer = sorted(sorted(strings, key = itemgetter(n)))
+    return answer
+
+
+## 개념 정리
+
+# 리스트.sort()    vs    sorted(리스트)   의 차이
+
+# 1. 리스트.sort()
+#   - 본체의 리스트를 정렬해서 변환
+# 2. sorted(리스트)
+#   - 본체 리스트는 내버려두고, 정렬한 새로운 리스트 반환
