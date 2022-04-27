@@ -23,6 +23,9 @@
  * 프로그래머스 → 정수 제곱근 판별
  * 프로그래머스 → 나누어 떨어지는 숫자 배열
  * 프로그래머스 → 제일 작은 수 제거하기
+ * 프로그래머스 → 2019 카카오 개발자 겨울 인턴십 
+
+
  #### * **SW Expert Academy**
  * SW Expert Academy → 평균값 구하기
  * SW Expert Academy → 홀수 만 더하기
@@ -69,6 +72,7 @@
  * SW Expert Academy → 제곱 팰린드롬 수
  * SW Expert Academy → 비밀번호
  
+
  #### * **etc**
  * n^m구하기
  * power() 함수 작성
