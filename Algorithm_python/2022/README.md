@@ -24,7 +24,7 @@
  * 프로그래머스 → 나누어 떨어지는 숫자 배열
  * 프로그래머스 → 제일 작은 수 제거하기
  * 프로그래머스 → 2019 카카오 개발자 겨울 인턴십 
-
+ * 프로그래머스 → 2018 KAKAO BLIND RECRUITMENT - [1차]뉴스 클러스터링
 
  #### * **SW Expert Academy**
  * SW Expert Academy → 평균값 구하기
