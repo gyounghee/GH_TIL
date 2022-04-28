@@ -6,9 +6,9 @@ def solution(s):
     sorted_s = sorted(s, key=len) 
     for n in range(len(sorted_s)):
         sorted_s[n] = sorted_s[n].split(',')
-    
-    num_list = sum(sorted_s,[])
-    num_list = list(dict.fromkeys(num_list))
+                                              
+    num_list = sum(sorted_s,[])               
+    num_list = list(dict.fromkeys(num_list))  
     
     answer = list(map(int, num_list))
     return answer
@@ -33,3 +33,11 @@ print(solution(s))   # [123]
 # TEST CASE Ⅴ 
 s = "{{4,2,3},{3},{2,3,4,1},{2,3}}"
 print(solution(s))   # [3, 2, 4, 1]
+
+
+## 다른 풀이
+def solution(s):
+    s = eval(s.replace("{", "[").replace("}", "]"))
+    answer = list({num:0 for k in sorted(s, key=lambda x: len(x)) for num in k}.keys())
+    return answer
+
