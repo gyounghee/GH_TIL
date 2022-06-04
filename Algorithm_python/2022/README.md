@@ -1,4 +1,5 @@
 ### [ python_prac ]
+
 #### * **프로그래머스**
  * 프로그래머스 → 프린터 (스택 / 큐)
  * 프로그래머스 → 다리를 지나는 트럭(스택)  ▶ 다시 풀어보기
@@ -8,14 +9,14 @@
  * 프로그래머스 → 2019 KAKAO BLIND RECRUITMENT - 오픈채팅방
  * 프로그래머스 → 더 맵게 ( 힙, Heap)  ▶ Heap 자료구조 공부 필요
  * 프로그래머스 → 2017 팁스타운 - 짝지어 제거하기
- * 프로그래머스 → 가장 큰 수 (정렬)    ▶▶▶▶▶ 푸는 중
+ * 프로그래머스 → 가장 큰 수 (정렬)    ▶▶▶ 푸는 중 ◀◀◀ 
  * 프로그래머스 → 약수의 합
  * 프로그래머스 → 최대공약수와 최소공배수
  * 프로그래머스 → 두 정수 사이의 합
  * 프로그래머스 → 소수 찾기 ▶ 다시 풀어보기 (다른 사람 풀이 참고)
  * 프로그래머스 → 위클리 챌린지 - 최소 직사각형
  * 프로그래머스 → Summer/Winter Coding(2019) - 멀쩡한 사각형  ▶ (다른 사람 풀이 참고..ㅜ)
- * 프로그래머스 → 2020 KAKAO BLIND RECRUITMENT - 괄호 변환   ▶▶▶▶ 푸는 중
+ * 프로그래머스 → 2020 KAKAO BLIND RECRUITMENT - 괄호 변환     ▶▶▶ 푸는 중 ◀◀◀ 
  * 프로그래머스 → 문자열 내 마음대로 정렬하기
  * 프로그래머스 → 이상한 문자 만들기
  * 프로그래머스 → x만큼 간격이 있는 n개의 숫자
@@ -30,9 +31,58 @@
  * 프로그래머스 → 소수 찾기 (완전 탐색)
  * 프로그래머스 → 2020 KAKO BLIND RECRUITMENT - 문자열 압축
  * 프로그래머스 → 전화번호 목록 (해시)
+ * 프로그래머스 → 위장 (해시)
+ * 프로그래머스 → 2021 카카오 채용연계형 인턴십 - 표 편집
+ * 프로그래머스 → 2021 카카오 채용연계형 인턴십 - 거리두기 확인하기  ▶▶▶ BFS,DFS 공부 필요
+ * 프로그래머스 → 베스트앨범 (해시)  
+ * 프로그래머스 → 하샤드 수 
+ * 프로그래머스 → H-Index (정렬)
+ * 프로그래머스 → Summer/Winter Coding(~2018) - 영어 끝말잇기
+ * 프로그래머스 → 숫자의 표현
+ * 프로그래머스 → 다음 큰 숫자
+ * 프로그래머스 → 행렬의 곱셈
+ * 프로그래머스 → 최솟값 만들기
+ * 프로그래머스 → 올바른 괄호
+ * 프로그래머스 → 피로도
+ * 프로그래머스 → N개의 최소공배수   ▶▶▶ 푸는 중 ◀◀◀ 
+ * 프로그래머스 → 피보나치 수 
+ * 프로그래머스 → 2017 팁스타운 - 예상 대진표
+ * 프로그래머스 → 2 x n 타일링
 
- #### * BAEKJOON
+#### * **LeetCode**
+ * LeetCode → 1. Two Sum
+ * LeetCode → 125. Valid Palindrome
+ * LeetCode → 344. Reverse String
+ * LeetCode → 937. Reorder Data in Log Files
+ * LeetCode → 819. Most Common Word
+ * LeetCode → 49. Group Anagrams
+ * LeetCode → 5. Longest Palindromic Substring   (난이도 ★★  → 나에겐 좀 어려웠음..ㅜ)
+ * LeetCode → 42. Trapping Rain Water  (난이도 ★★★  → 나에겐 좀 어려웠음..ㅜ)
+ * LeetCode → 15. 3Sum    ( 공부 후  투 포인터 사용 재도전 )
+ * LeetCode → 561. Array Partition I
+ * LeetCode → 238. Product of Array Except Self 
+ * LeetCode → 121. Best Time to Buy and Sell Stock (재도전) 
+ * LeetCode → 234. Palindrome Linked List  ( 런너(Runner) 공부 )
+ * LeetCode → 21. Merge Two Sorted Lists ( 다시 풀어보기 )
+ * LeetCode → 2. Add Two Numbers
+
+
+ #### * **BAEKJOON**
  * BAEKJOON → 색종이와 쿼리  ▶▶▶ 푸는 중 - 답은 맞는데 돌리면 시간초과 뜸
+ * BAEKJOON → DFS와 BFS  ▶ 나중에 한 번 더 풀어보기 
+ * BAEKJOON → 수 정렬하기 
+ * BAEKJOON → 수 정렬하기 2 < input()과 sys.stdin.readline()에 대해 공부함 > 
+ * BAEKJOON → 큐
+ * BAEKJOON → 설탕 배달 ( Greedy )
+ * BAEKJOON → 1로 만들기 (DP)   ▶▶▶ 푸는 중 ◀◀◀ 
+ * BAEKJOON → 피보나치 함수 (DP)
+ * BAEKJOON → ATM (Greedy)
+ * BAEKJOON → 동전 0 (Greedy)
+ * BAEKJOON → 회의실 배정 (Greedy)
+ * BAEKJOON → 보물 (Greedy)
+ * BAEKJOON → 거스름돈 (Greedy)
+ * BAEKJOON → 전자레인지 (Greedy)
+
 
  #### * **SW Expert Academy**
  * SW Expert Academy → 평균값 구하기
@@ -72,7 +122,7 @@
  * SW Expert Academy → 백만장자 프로젝트  ▶ 다른 사람 코드 참고 ( 제한시간 초과 ) 
  * SW Expert Academy → 모음이 보이지 않는 사람
  * SW Expert Academy → 거듭 제곱
- * SW Expert Academy → 암호문3  ▶ 문제 개똥같이 만들어놔서 짜증났음;
+ * SW Expert Academy → 암호문3  
  * SW Expert Academy → 원재의 메모리 복구하기
  * SW Expert Academy → 암호생성기
  * SW Expert Academy → 소득 불균형
